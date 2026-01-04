@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { signOut } from '../login/actions'
 import Link from 'next/link'
-import { Flame, Home, LogOut, Plus, Trophy } from 'lucide-react'
+import { Flame, Home, LogOut, Plus, Trophy, UserCog } from 'lucide-react'
 import { formatCommitment } from '@/lib/utils'
 import { getUserName } from '@/lib/user'
 
@@ -42,11 +42,18 @@ export default async function DashboardPage() {
           </Link>
           <span className="font-bold text-lg">Mon Espace</span>
         </div>
-        <form action={signOut}>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-red-500">
-            <LogOut className="h-5 w-5" />
-          </Button>
-        </form>
+        <div className="flex gap-2 items-center">
+          <Link href="/settings">
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+              <UserCog className="h-5 w-5" />
+            </Button>
+          </Link>
+          <form action={signOut}>
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-red-500">
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </form>
+        </div>
       </header>
 
       <main className="p-4 space-y-8 max-w-md mx-auto w-full flex-1">
@@ -126,18 +133,20 @@ export default async function DashboardPage() {
       </main>
 
       {/* Floating Action Button with Label */}
-      {goals && goals.length > 0 && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-8 duration-500 delay-500">
-          <div className="bg-foreground text-background text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg hidden md:block animate-bounce">
-            Nouveau défi ?
+      {
+        goals && goals.length > 0 && (
+          <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-8 duration-500 delay-500">
+            <div className="bg-foreground text-background text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg hidden md:block animate-bounce">
+              Nouveau défi ?
+            </div>
+            <Link href="/goals/new">
+              <Button size="icon" className="h-16 w-16 rounded-full shadow-2xl bg-primary text-primary-foreground hover:bg-orange-600 hover:scale-110 transition-transform duration-200 border-4 border-background">
+                <Plus className="h-8 w-8" />
+              </Button>
+            </Link>
           </div>
-          <Link href="/goals/new">
-            <Button size="icon" className="h-16 w-16 rounded-full shadow-2xl bg-primary text-primary-foreground hover:bg-orange-600 hover:scale-110 transition-transform duration-200 border-4 border-background">
-              <Plus className="h-8 w-8" />
-            </Button>
-          </Link>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   )
 }
