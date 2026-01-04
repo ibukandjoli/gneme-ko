@@ -24,8 +24,8 @@ export async function createGoal(formData: FormData) {
     const serviceFee = Math.ceil(stakeAmount * 0.10)
     const totalAmount = stakeAmount + serviceFee
 
-    // List of allowed enum values in the database
-    const allowedCategories = ['sport', 'learning', 'early_wake', 'detox', 'other', 'business']
+    // List of allowed enum values in the database (Must match DB enum exactly)
+    const allowedCategories = ['sport', 'learning', 'early_wake', 'detox', 'other']
 
     // If the category from form is not in the allowed list, it's a custom one.
     // We must save it as 'other' in the DB to avoid the enum error.
