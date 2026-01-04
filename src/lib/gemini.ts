@@ -9,9 +9,9 @@ export async function validateProofWithGemini(
     category: string
 ): Promise<{ isValid: boolean; feedback: string }> {
 
-    // Use a specific, stable model version
-    // Fallback to gemini-1.5-pro-latest if flash is not found in region
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    // Use the model available in your Google AI Studio dashboard
+    // 'gemini-2.0-flash-exp' is the latest experimental version available to you
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
     const prompt = `
     Tu es un juge strict pour une application de Goal-Setting appelée "Gneme Ko".
