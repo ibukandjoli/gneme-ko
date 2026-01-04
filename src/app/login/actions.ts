@@ -23,7 +23,7 @@ export async function sendOtp(formData: FormData) {
 
     if (error) {
         console.error('Login error:', error)
-        return { error: 'Erreur lors de l\'envoi du code. Réessayez.' }
+        return { error: error.message || 'Erreur lors de l\'envoi du code. Réessayez.' }
     }
 
     return { success: true }

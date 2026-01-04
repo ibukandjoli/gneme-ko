@@ -72,7 +72,7 @@ function LoginForm() {
             <form action={handleSendOtp} className="space-y-4">
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">Email</label>
-                <Input id="email" name="email" type="email" placeholder="mouhamadou@gnemeko.sn" required />
+                <Input id="email" name="email" type="email" placeholder="jaambaar@gmail.com" required />
               </div>
               {error && <p className="text-red-500 text-sm p-3 bg-red-500/10 rounded border border-red-500/20">{error}</p>}
               <Button type="submit" className="w-full font-bold" disabled={isPending}>
