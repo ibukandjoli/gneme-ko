@@ -24,13 +24,27 @@ export async function createGoal(formData: FormData) {
     const serviceFee = Math.ceil(stakeAmount * 0.10)
     const totalAmount = stakeAmount + serviceFee
 
+    // List of allowed enum values in the database
+    const allowedCategories = ['sport', 'learning', 'early_wake', 'detox', 'other', 'business']
+
+    // If the category from form is not in the allowed list, it's a custom one.
+    // We must save it as 'other' in the DB to avoid the enum error.
+    // We will prepend the custom category to the title so it's not lost.
+    let dbCategory = category
+    let dbTitle = title
+
+    if (!allowedCategories.includes(category)) {
+        dbCategory = 'other'
+        dbTitle = `[${category}] ${title}`
+    }
+
     // 1. Create Goal
     const { data: goal, error: goalError } = await supabase
         .from('goals')
         .insert({
             user_id: user.id,
-            title,
-            category,
+            title: dbTitle,
+            category: dbCategory,
             stake_amount: stakeAmount,
             service_fee: serviceFee,
             total_amount: totalAmount,
@@ -67,5 +81,9 @@ export async function createGoal(formData: FormData) {
     })
 
     revalidatePath('/dashboard')
-    redirect('/dashboard')
+
+    // Redirect to Wave Payment Link
+    // Format: https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=14000
+    const waveUrl = `https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=${totalAmount}`
+    redirect(waveUrl)
 }

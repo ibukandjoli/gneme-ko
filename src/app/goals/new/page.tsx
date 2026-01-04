@@ -137,8 +137,8 @@ export default function NewGoalPage() {
                         Erreur: {error}
                     </div>
                 )}
-                <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 mt-auto mb-6" disabled={isPending}>
-                    {isPending ? 'Création...' : `Valider et Payer ${total.toLocaleString()} FCFA`}
+                <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 mt-auto mb-6 bg-[#1da1f2] hover:bg-[#1da1f2]/90 text-white" disabled={isPending}>
+                    {isPending ? 'Redirection...' : `Payer ${total.toLocaleString()} FCFA via Wave`}
                 </Button>
             </form>
         </div>
