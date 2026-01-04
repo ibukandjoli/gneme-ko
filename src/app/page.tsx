@@ -133,7 +133,7 @@ export default async function Home() {
               number="2"
               title="Mise ta caution"
               icon={<Wallet className="h-6 w-6 text-white" />}
-              desc="Dépose via Wave/OM. C'est ton argent, ne le perds pas."
+              desc="Dépose-la via Wave. C'est ton argent, ne le perds pas."
             />
             <Step
               number="3"

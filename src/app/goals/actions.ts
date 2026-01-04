@@ -44,7 +44,7 @@ export async function createGoal(formData: FormData) {
 
     if (goalError) {
         console.error('Goal creation error:', goalError)
-        return { error: 'Failed to create goal' }
+        return { error: goalError.message || 'Failed to create goal' }
     }
 
     // 2. Simulate Transactions

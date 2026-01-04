@@ -16,9 +16,15 @@ export default function NewGoalPage() {
     const fee = Math.ceil(stake * 0.10)
     const total = stake + fee
 
+    const [error, setError] = useState<string | null>(null)
+
     const handleSubmit = (formData: FormData) => {
+        setError(null)
         startTransition(async () => {
-            await createGoal(formData)
+            const result = await createGoal(formData)
+            if (result?.error) {
+                setError(result.error)
+            }
         })
     }
 
@@ -104,6 +110,11 @@ export default function NewGoalPage() {
                     </CardContent>
                 </Card>
 
+                {error && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-md text-red-500 mb-4">
+                        Erreur: {error}
+                    </div>
+                )}
                 <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 mt-auto mb-6" disabled={isPending}>
                     {isPending ? 'Création...' : `Valider et Payer ${total.toLocaleString()} FCFA`}
                 </Button>
