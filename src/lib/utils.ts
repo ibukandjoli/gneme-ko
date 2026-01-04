@@ -12,6 +12,10 @@ export function formatCommitment(title: string, duration: number, amount: number
 
     // Clean title first (lowercase start unless proper noun?) - simplistic approach
     let cleanTitle = title.trim();
+
+    // Remove custom category prefix like [Business] or [Religion]
+    cleanTitle = cleanTitle.replace(/^\[.*?\]\s*/i, '');
+
     if (cleanTitle.length > 0) {
         cleanTitle = cleanTitle.charAt(0).toLowerCase() + cleanTitle.slice(1);
     }
@@ -26,7 +30,7 @@ export function getCategoryDisplayName(category: string): string {
         'early_wake': 'Réveil matinal',
         'detox': 'Santé / Détox',
         'business': 'Business / Pro',
-        'other': 'Autre Personnel'
+        'other': 'Défi Personnel'
     }
     return map[category] || category || 'Défi Personnel'
 }

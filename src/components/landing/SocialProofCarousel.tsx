@@ -14,6 +14,18 @@ interface Goal {
     user_name?: string // Optional if we fetch it, or we use a fallback
 }
 
+// Helper to get sophisticated category label
+// If category is other, try to extract [CustomName] from title.
+export function getSmartCategoryLabel(goal: any) {
+    // 1. Try to find bracket prefix in title
+    const match = goal.title.match(/^\[(.*?)\]/);
+    if (match && match[1]) {
+        return match[1]; // Returns "Business", "Religion", etc.
+    }
+    // 2. Fallback to standard mapping
+    return getCategoryDisplayName(goal.category);
+}
+
 export function SocialProofCarousel({ goals }: { goals: Goal[] }) {
     // Duplicate limits for infinite loop illusion
     const extendedGoals = [...goals, ...goals, ...goals]
@@ -25,7 +37,7 @@ export function SocialProofCarousel({ goals }: { goals: Goal[] }) {
                     <LiveChallengeCard
                         key={`${goal.id}-${index}`}
                         user={goal.user_name || "Jambaar"}
-                        category={getCategoryDisplayName(goal.category)}
+                        category={getSmartCategoryLabel(goal)}
                         commitment={formatCommitment(goal.title, goal.duration_days, goal.stake_amount)}
                         streak={goal.current_streak || 0}
                         amount={(goal.stake_amount || 0).toLocaleString() + " F"}
