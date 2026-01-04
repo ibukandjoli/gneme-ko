@@ -31,9 +31,9 @@ export function Footer() {
                     <div>
                         <h4 className="font-bold mb-4">Légal</h4>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            <li><Link href="#" className="hover:text-primary transition-colors">CGU / CGV</Link></li>
-                            <li><Link href="#" className="hover:text-primary transition-colors">Politique de confidentialité</Link></li>
-                            <li><Link href="#" className="hover:text-primary transition-colors">Mentions légales</Link></li>
+                            <li><Link href="/cgu" className="hover:text-primary transition-colors">CGU / CGV</Link></li>
+                            <li><Link href="/confidentialite" className="hover:text-primary transition-colors">Politique de confidentialité</Link></li>
+                            <li><Link href="/mentions-legales" className="hover:text-primary transition-colors">Mentions légales</Link></li>
                         </ul>
                     </div>
 
@@ -41,13 +41,13 @@ export function Footer() {
                     <div>
                         <h4 className="font-bold mb-4">Suis-nous</h4>
                         <div className="flex gap-4">
-                            <Link href="#" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+                            <Link href="https://instagram.com/ibukandjoli" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
                                 <Instagram className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+                            <Link href="https://twitter.com/ibukandjoli" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
                                 <Twitter className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
+                            <Link href="https://linkedin.com/in/ibukandjoli" className="bg-muted/10 p-2 rounded-full hover:bg-primary/20 hover:text-primary transition-colors">
                                 <Linkedin className="h-5 w-5" />
                             </Link>
                         </div>

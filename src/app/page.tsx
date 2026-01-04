@@ -157,7 +157,7 @@ export default async function Home() {
       {/* Section 3: Preuve Sociale (Real Data + Carousel) */}
       <section className="py-20 bg-background overflow-hidden border-t border-white/5">
         <div className="space-y-12">
-          <h2 className="text-3xl font-bold text-center">Ils sont en train de réussir</h2>
+          <h2 className="text-3xl font-bold text-center">Nos Jambaars actuels</h2>
 
           {/* Real Carousel */}
           {recentGoals && recentGoals.length > 0 ? (
@@ -218,7 +218,7 @@ export default async function Home() {
       <section className="px-4 py-24 text-center">
         <Link href="/login">
           <Button size="lg" className="h-16 px-12 rounded-full text-xl font-bold shadow-2xl animate-pulse hover:animate-none hover:scale-105 transition-transform">
-            Je crée mon défi maintenant 🔥
+            Je me lance aussi 🔥
           </Button>
         </Link>
         <p className="mt-4 text-sm text-muted-foreground">Pas de carte bancaire requise pour commencer.</p>
