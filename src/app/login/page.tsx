@@ -5,12 +5,21 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { loginWithMagicLink } from "./actions"
-import { useState, useTransition } from "react"
+import { useSearchParams } from "next/navigation"
+import { useState, useTransition, useEffect, Suspense } from "react"
 
-export default function LoginPage() {
+function LoginForm() {
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const errorParam = searchParams.get('error')
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam))
+    }
+  }, [searchParams])
 
   async function handleSubmit(formData: FormData) {
     setError(null)
@@ -34,7 +43,7 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl font-bold">Connexion</CardTitle>
           <CardDescription>
-            Rejoins la communauté Gneme Ko.
+            Rejoins la communauté Gnémé Ko.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -48,7 +57,11 @@ export default function LoginPage() {
                 <label htmlFor="email" className="text-sm font-medium">Email</label>
                 <Input id="email" name="email" type="email" placeholder="mouhamadou@gnemeko.sn" required />
               </div>
-              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {error && (
+                <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-md text-red-500 text-sm">
+                  {error === "Auth session missing!" ? "Veuillez ouvrir le lien dans le MÊME navigateur que celui utilisé pour la demande." : error}
+                </div>
+              )}
               <Button type="submit" className="w-full font-bold" disabled={isPending}>
                 {isPending ? 'Envoi...' : 'Envoyer le lien magique'}
               </Button>
@@ -62,5 +75,13 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center p-8">Chargement...</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
