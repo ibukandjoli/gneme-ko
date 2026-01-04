@@ -64,7 +64,7 @@ function LoginForm() {
           <CardDescription>
             {step === 'email'
               ? 'Rejoins la communauté Gnémé Ko.'
-              : `Un code à 6 chiffres a été envoyé à ${email}`}
+              : `Un code à 8 chiffres a été envoyé à ${email}`}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

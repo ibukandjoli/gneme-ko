@@ -16,11 +16,19 @@ export default function NewGoalPage() {
     const fee = Math.ceil(stake * 0.10)
     const total = stake + fee
 
+    const [category, setCategory] = useState<string>('sport')
     const [error, setError] = useState<string | null>(null)
 
     const handleSubmit = (formData: FormData) => {
         setError(null)
         startTransition(async () => {
+            // If category is other, use the custom input
+            if (formData.get('category') === 'other') {
+                const custom = formData.get('custom_category') as string
+                if (custom) {
+                    formData.set('category', custom)
+                }
+            }
             const result = await createGoal(formData)
             if (result?.error) {
                 setError(result.error)
@@ -58,14 +66,28 @@ export default function NewGoalPage() {
 
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Catégorie</label>
-                            <select name="category" className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" required>
+                            <select
+                                name="category"
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                required
+                            >
                                 <option value="sport">Sport / Fitness</option>
+                                <option value="business">Business / Pro</option>
                                 <option value="learning">Apprentissage / Lecture</option>
                                 <option value="early_wake">Réveil matinal</option>
                                 <option value="detox">Détox / Santé</option>
-                                <option value="other">Autre</option>
+                                <option value="other">Autre (Préciser)</option>
                             </select>
                         </div>
+
+                        {category === 'other' && (
+                            <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
+                                <label className="text-sm font-medium">Quelle est cette catégorie ?</label>
+                                <Input name="custom_category" placeholder="Ex: Méditation, Écriture..." required />
+                            </div>
+                        )}
 
 
                     </CardContent>
