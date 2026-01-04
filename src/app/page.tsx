@@ -47,7 +47,7 @@ export default async function Home() {
             </Link>
           ) : (
             <div className="flex gap-3">
-              <Link href="/login">
+              <Link href="/login" className="hidden sm:inline-flex">
                 <Button variant="ghost" className="font-medium text-muted-foreground hover:text-foreground">
                   Se connecter
                 </Button>
@@ -175,29 +175,7 @@ export default async function Home() {
               The prompt implies modifying the "old" cards which were the "Fake Data". 
               Let's keep them as a static showcase of specific archetypes below the live ticker.
           */}
-          <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6 opacity-80 hover:opacity-100 transition-opacity">
-            <LiveChallengeCard
-              user="Moussa D."
-              amount="10.000 F"
-              category="Sport"
-              streak={7}
-              commitment="Je vais courir 5km tous les matins pendant 7 jours sinon je perds 10.000 FCFA."
-            />
-            <LiveChallengeCard
-              user="Fatou S."
-              amount="50.000 F"
-              category="Réveil 5h"
-              streak={21}
-              commitment="Je vais me réveiller à 5h00 précises pendant 21 jours sinon je perds 50.000 FCFA."
-            />
-            <LiveChallengeCard
-              user="Lamine N."
-              amount="5.000 F"
-              category="Lecture"
-              streak={3}
-              commitment="Je vais lire 20 pages de mon livre chaque soir sinon je perds 5.000 FCFA."
-            />
-          </div>
+
         </div>
       </section>
 
