@@ -10,7 +10,8 @@ export async function validateProofWithGemini(
 ): Promise<{ isValid: boolean; feedback: string }> {
 
     // Use a specific, stable model version
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    // Updated to -001 suffix to ensure availability
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
 
     const prompt = `
     Tu es un juge strict pour une application de Goal-Setting appelée "Gneme Ko".
