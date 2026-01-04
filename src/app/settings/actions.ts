@@ -39,7 +39,7 @@ export async function updateProfile(formData: FormData) {
 
     if (error) {
         console.error('Profile update error:', error)
-        return { error: 'Erreur lors de la mise à jour du profil' }
+        return { error: error.message || 'Erreur lors de la mise à jour du profil' }
     }
 
     revalidatePath('/settings')
