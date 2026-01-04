@@ -82,8 +82,7 @@ export async function createGoal(formData: FormData) {
 
     revalidatePath('/dashboard')
 
-    // Redirect to Wave Payment Link
-    // Format: https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=14000
+    // Return the URL for client-side redirection (better for Deep Links/App Switching)
     const waveUrl = `https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=${totalAmount}`
-    redirect(waveUrl)
+    return { success: true, paymentUrl: waveUrl }
 }

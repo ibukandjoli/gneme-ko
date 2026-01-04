@@ -32,6 +32,9 @@ export default function NewGoalPage() {
             const result = await createGoal(formData)
             if (result?.error) {
                 setError(result.error)
+            } else if (result?.paymentUrl) {
+                // Client-side redirect to trigger App Link/Universal Link behavior
+                window.location.href = result.paymentUrl
             }
         })
     }
