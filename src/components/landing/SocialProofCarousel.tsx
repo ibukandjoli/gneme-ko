@@ -1,6 +1,6 @@
 'use client'
 
-import { formatCommitment } from '@/lib/utils'
+import { formatCommitment, getCategoryDisplayName } from '@/lib/utils'
 import { LiveChallengeCard } from './LiveChallengeCard'
 import { useEffect, useState } from 'react'
 
@@ -24,8 +24,8 @@ export function SocialProofCarousel({ goals }: { goals: Goal[] }) {
                 {extendedGoals.map((goal, index) => (
                     <LiveChallengeCard
                         key={`${goal.id}-${index}`}
-                        user={goal.user_name || "Challenger"}
-                        category={goal.category || "Défi"}
+                        user={goal.user_name || "Jambaar"}
+                        category={getCategoryDisplayName(goal.category)}
                         commitment={formatCommitment(goal.title, goal.duration_days, goal.stake_amount)}
                         streak={goal.current_streak || 0}
                         amount={(goal.stake_amount || 0).toLocaleString() + " F"}

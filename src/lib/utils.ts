@@ -18,3 +18,15 @@ export function formatCommitment(title: string, duration: number, amount: number
 
     return `Je vais ${cleanTitle} pendant ${duration} jours, sinon je perds ${amount.toLocaleString('fr-FR')} FCFA.`;
 }
+// Helper to translate DB categories to Front Labels
+export function getCategoryDisplayName(category: string): string {
+    const map: Record<string, string> = {
+        'sport': 'Sport / Fitness',
+        'learning': 'Apprentissage',
+        'early_wake': 'Réveil matinal',
+        'detox': 'Santé / Détox',
+        'business': 'Business / Pro',
+        'other': 'Autre Personnel'
+    }
+    return map[category] || category || 'Défi Personnel'
+}

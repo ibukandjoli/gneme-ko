@@ -14,7 +14,7 @@ export async function getUserName() {
     if (!user) return null
 
     // Fallback: extracting name from email, e.g. "john.doe@..." -> "John"
-    const emailName = user.email ? user.email.split('@')[0].replace(/[0-9]/g, '') : "Challenger"
+    const emailName = user.email ? user.email.split('@')[0].replace(/[0-9]/g, '') : "Jambaar"
     // Title case
     return emailName.charAt(0).toUpperCase() + emailName.slice(1)
 }
