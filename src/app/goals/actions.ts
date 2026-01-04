@@ -82,7 +82,8 @@ export async function createGoal(formData: FormData) {
 
     revalidatePath('/dashboard')
 
-    // Return the URL for client-side redirection (better for Deep Links/App Switching)
-    const waveUrl = `https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=${totalAmount}`
-    return { success: true, paymentUrl: waveUrl }
+    // Return success to redirect to dashboard directly (Simulation Mode for MVP)
+    // const waveUrl = `https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=${totalAmount}`
+    // return { success: true, paymentUrl: waveUrl }
+    return { success: true, goalId: goal.id }
 }

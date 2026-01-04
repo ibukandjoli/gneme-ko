@@ -32,9 +32,10 @@ export default function NewGoalPage() {
             const result = await createGoal(formData)
             if (result?.error) {
                 setError(result.error)
-            } else if (result?.paymentUrl) {
-                // Client-side redirect to trigger App Link/Universal Link behavior
-                window.location.href = result.paymentUrl
+            } else if (result?.success) {
+                // Simulation Mode: Redirect directly to dashboard
+                // window.location.href = result.paymentUrl
+                window.location.href = '/dashboard'
             }
         })
     }
@@ -141,7 +142,7 @@ export default function NewGoalPage() {
                     </div>
                 )}
                 <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 mt-auto mb-6 bg-[#1da1f2] hover:bg-[#1da1f2]/90 text-white" disabled={isPending}>
-                    {isPending ? 'Redirection...' : `Payer ${total.toLocaleString()} FCFA via Wave`}
+                    {isPending ? 'Création...' : `Valider le défi (${total.toLocaleString()} F)`}
                 </Button>
             </form>
         </div>
