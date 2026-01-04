@@ -87,9 +87,9 @@ function LoginForm() {
                   id="code"
                   name="code"
                   type="text"
-                  placeholder="123456"
-                  className="text-center text-2xl tracking-widest font-mono"
-                  maxLength={6}
+                  placeholder="12345678"
+                  className="text-center text-xl tracking-widest font-mono"
+                  maxLength={8}
                   autoFocus
                   required
                 />
