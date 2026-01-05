@@ -32,16 +32,16 @@ export default function NewGoalPage() {
             const result = await createGoal(formData)
             if (result?.error) {
                 setError(result.error)
-            } else if (result?.success) {
-                // Simulation Mode: Redirect directly to dashboard
-                // window.location.href = result.paymentUrl
-                window.location.href = '/dashboard'
+            } else if (result?.paymentUrl) {
+                // Client-side redirect to Stripe Checkout
+                window.location.href = result.paymentUrl
             }
         })
     }
 
     return (
         <div className="flex min-h-screen flex-col bg-background p-4 pb-20">
+            {/* ... keeping header ... */}
             <header className="flex items-center gap-4 mb-6">
                 <Link href="/dashboard">
                     <Button variant="ghost" size="icon"><ArrowLeft className="h-5 w-5" /></Button>
@@ -50,6 +50,7 @@ export default function NewGoalPage() {
             </header>
 
             <form action={handleSubmit} className="flex-1 flex flex-col max-w-md mx-auto w-full gap-6">
+                {/* ... existing card code ... */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Ton Objectif</CardTitle>
@@ -141,9 +142,25 @@ export default function NewGoalPage() {
                         Erreur: {error}
                     </div>
                 )}
-                <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 mt-auto mb-6 bg-[#1da1f2] hover:bg-[#1da1f2]/90 text-white" disabled={isPending}>
-                    {isPending ? 'Création...' : `Valider le défi (${total.toLocaleString()} F)`}
-                </Button>
+
+                <div className="mt-auto mb-6 space-y-3">
+                    <Button type="submit" size="lg" className="w-full font-bold h-14 text-lg shadow-xl shadow-primary/20 bg-[#1da1f2] hover:bg-[#1da1f2]/90 text-white" disabled={isPending}>
+                        {isPending ? 'Chargement...' : `Payer ${total.toLocaleString()} FCFA`}
+                    </Button>
+
+                    <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground bg-muted/20 p-2 rounded-lg">
+                        <span>Paiement sécurisé par</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/wave_1.svg" alt="Wave Logo" className="h-6 object-contain" />
+                        <span className="font-bold">&</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/images/visa.svg" alt="Visa Logo" className="h-8 object-contain" />
+                    </div>
+                    <p className="text-center text-[10px] text-muted-foreground/60">
+                        Utilise ta carte Wave (Application Wave &gt; Carte) ou toute carte Visa/Mastercard.
+                    </p>
+                </div>
+
             </form>
         </div>
     )

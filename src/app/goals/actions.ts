@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { stripe } from '@/lib/stripe'
 
 export async function createGoal(formData: FormData) {
     const supabase = await createClient()
@@ -38,7 +39,7 @@ export async function createGoal(formData: FormData) {
         dbTitle = `[${category}] ${title}`
     }
 
-    // 1. Create Goal
+    // 1. Create Goal with pending status
     const { data: goal, error: goalError } = await supabase
         .from('goals')
         .insert({
@@ -49,8 +50,8 @@ export async function createGoal(formData: FormData) {
             service_fee: serviceFee,
             total_amount: totalAmount,
             duration_days: duration,
-            start_date: new Date().toISOString(), // Starts now
-            status: 'active', // Payment simulated as success
+            start_date: new Date().toISOString(),
+            status: 'pending_payment', // Changed from active
             currency: 'XOF'
         })
         .select()
@@ -61,29 +62,62 @@ export async function createGoal(formData: FormData) {
         return { error: goalError.message || 'Failed to create goal' }
     }
 
-    // 2. Simulate Transactions
-    // Deposit
-    await supabase.from('transactions').insert({
-        user_id: user.id,
-        goal_id: goal.id,
-        amount: stakeAmount,
-        type: 'deposit',
-        status: 'completed'
-    })
+    // 2. Create Stripe Checkout Session
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price_data: {
+                        currency: 'xof',
+                        product_data: {
+                            name: `Caution: ${dbTitle}`,
+                            description: 'Remboursable en cas de succès',
+                        },
+                        unit_amount: stakeAmount, // Stripe XOF is zero-decimal? No, XOF is usually normal amount but let's check docs. XOF is zero-decimal currency in Stripe? 
+                        // Actually Stripe supports XOF. 1000 XOF = 1000 unit_amount usually for zero-decimal.
+                        // Wait, for XOF (West African CFA frac), it IS a zero-decimal currency.
+                        // So 5000 FCFA = 5000.
+                        // Let's verify standard behavior. If it WASN'T zero decimal, 5000 FCFA would be 500000.
+                        // Stripe API: "Zero-decimal currencies: BIF, CLP, DJF, GNF, JPY, KMF, KRW, MGA, PYG, RWF, UGX, VND, VUV, XAF, XOF, XPF."
+                        // CORRECT. So passed amount is exact amount.
+                    },
+                    quantity: 1,
+                },
+                {
+                    price_data: {
+                        currency: 'xof',
+                        product_data: {
+                            name: 'Frais de service (10%)',
+                            description: 'Non remboursable',
+                        },
+                        unit_amount: serviceFee,
+                    },
+                    quantity: 1,
+                }
+            ],
+            mode: 'payment',
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/goals/verify-payment?session_id={CHECKOUT_SESSION_ID}&goal_id=${goal.id}`,
+            cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/goals/new`, // Or dashboard
+            customer_email: user.email,
+            metadata: {
+                goal_id: goal.id,
+                user_id: user.id
+            }
+        });
 
-    // Service Fee
-    await supabase.from('transactions').insert({
-        user_id: user.id,
-        goal_id: goal.id,
-        amount: serviceFee,
-        type: 'service_fee',
-        status: 'completed'
-    })
+        if (!session.url) throw new Error('No session URL');
 
-    revalidatePath('/dashboard')
+        return { success: true, paymentUrl: session.url }
 
-    // Return success to redirect to dashboard directly (Simulation Mode for MVP)
-    // const waveUrl = `https://pay.wave.com/m/M_OfAgT8X_IT6P/c/sn/?amount=${totalAmount}`
-    // return { success: true, paymentUrl: waveUrl }
-    return { success: true, goalId: goal.id }
+    } catch (error: any) {
+        console.error('Stripe error:', error);
+        // Clean up pending goal if stripe fails?
+        await supabase.from('goals').delete().eq('id', goal.id)
+        return { error: 'Erreur lors de l\'initialisation du paiement: ' + error.message }
+    }
 }
+// Remove old simulation code block down here
+/* 
+    // 2. Simulate Transactions...
+*/
