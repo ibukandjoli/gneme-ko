@@ -9,10 +9,15 @@ export function JokerPurchase({ goalId, missedDate, price }: { goalId: string, m
     const [isPending, startTransition] = useTransition()
 
     const handlePurchase = () => {
-        if(!confirm(`Acheter un Joker pour ${price}F et sauver la journée du ${missedDate} ?`)) return;
+        if (!confirm(`Acheter un Joker pour ${price}F et sauver la journée du ${missedDate} ?`)) return;
 
         startTransition(async () => {
-            await buyJoker(goalId, missedDate)
+            const result = await buyJoker(goalId, missedDate)
+            if (result?.error) {
+                alert(result.error)
+            } else if (result?.paymentUrl) {
+                window.location.href = result.paymentUrl
+            }
         })
     }
 
@@ -25,8 +30,8 @@ export function JokerPurchase({ goalId, missedDate, price }: { goalId: string, m
                     <p className="text-sm text-red-600/90">Achète un Joker pour sauver ta caution.</p>
                 </div>
             </div>
-            <Button 
-                onClick={handlePurchase} 
+            <Button
+                onClick={handlePurchase}
                 disabled={isPending}
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-bold"
             >
